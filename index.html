@@ -1,1 +1,371 @@
-<h1>My Portfolio</h1>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<title>Oscar Sobon — Engineering Portfolio</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="styles.css">
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="brand">
+					<div class="logo">O</div>
+					<div>
+							<div style="font-weight:700">Oscar Sobon</div>
+						<div style="font-size:12px;color:var(--muted)">Computer Engineer</div>
+					</div>
+				</div>
+				<nav aria-label="Main navigation">
+					<a href="projects.html">Projects</a>
+					<a href="experience.html">Experience</a>
+					<a href="courses.html">Courses</a>
+					<a href="about.html">About</a>
+					<a href="contact.html">Contact</a>
+				</nav>
+			</header>
+
+			<main>
+				<section class="hero hero--single">
+					<div>
+					<div class="hero-header">
+						<div class="hero-title-wrap">
+							<h1><span class="hero-name">Oscar Sobon</span> <span class="tag tag--intern" role="note">Open to Summer 2026 Internships</span></h1>
+							<p class="lead">I’m a Computer Engineering student at the University of Michigan with a passion for building people-first technology, and an Entrepreneurship minor focused on turning ambitious ideas into real products. My goal is to design tools that make everyday experiences simpler, smarter, and more accessible.</p>
+							<div class="actions">
+								<a class="btn" href="about.html">About me</a>
+								<a class="btn ghost" href="contact.html">Get in touch</a>
+							</div>
+						</div>
+						<!-- Placeholder frame to be replaced later with a picture -->
+						<div class="hero-placeholder" aria-hidden="true">
+							<div class="placeholder-inner">Image placeholder</div>
+						</div>
+					</div>
+
+					<!-- discover section moved to full-bleed below -->
+
+					</div>
+				</section>
+			<section id="discover" class="full-bleed" style="margin-top:28px">
+			  <div class="card card--center" style="width:100%">
+			    <h2 class="section-title">Discover</h2>
+			    <div class="carousel" role="region" aria-label="Discover sections carousel">
+			      <button class="carousel-btn prev" aria-label="Previous">‹</button>
+			      <div class="carousel-viewport">
+			        <div class="carousel-track" id="carouselTrack">
+			          <div class="carousel-item window" data-index="0">
+			            <a class="carousel-link" href="projects.html" style="display:block;color:inherit;text-decoration:none">
+			              <div class="window-image" role="img" aria-label="Projects thumbnail"><div class="window-thumb placeholder" aria-hidden="true"></div></div>
+			              <div class="window-content"><h3 class="window-title">Projects</h3><div class="window-meta">Selected work</div><div class="window-body">Explore projects I've built</div></div>
+			            </a>
+			          </div>
+			          <div class="carousel-item window" data-index="1">
+			            <a class="carousel-link" href="experience.html" style="display:block;color:inherit;text-decoration:none">
+			              <div class="window-image" role="img" aria-label="Experience thumbnail"><div class="window-thumb placeholder" aria-hidden="true"></div></div>
+			              <div class="window-content"><h3 class="window-title">Experience</h3><div class="window-meta">Work history</div><div class="window-body">Roles and contributions</div></div>
+			            </a>
+			          </div>
+			          <div class="carousel-item window" data-index="2">
+			            <a class="carousel-link" href="courses.html" style="display:block;color:inherit;text-decoration:none">
+			              <div class="window-image" role="img" aria-label="Courses thumbnail"><div class="window-thumb placeholder" aria-hidden="true"></div></div>
+			              <div class="window-content"><h3 class="window-title">Courses</h3><div class="window-meta">Certifications</div><div class="window-body">Relevant courses & certificates</div></div>
+			            </a>
+			          </div>
+			        </div>
+			      </div>
+			      <button class="carousel-btn next" aria-label="Next">›</button>
+			    </div>
+			    <div class="carousel-indicators" id="carouselIndicators" role="tablist" aria-label="Carousel indicators"></div>
+			  </div>
+			</section>
+				<!-- About & contact sections removed from homepage per request; use navigation above -->
+			</main>
+
+			<footer>
+					© <span id="year"></span> Oscar Sobon — Built with care. View source on GitHub.
+			</footer>
+		</div>
+
+		<script>
+			// small enhancement: set current year
+			document.getElementById('year').textContent = new Date().getFullYear();
+
+			// Simple carousel implementation
+			(function(){
+				const track = document.getElementById('carouselTrack');
+				const items = track ? Array.from(track.children) : [];
+				const prevBtn = document.querySelector('.carousel-btn.prev');
+				const nextBtn = document.querySelector('.carousel-btn.next');
+				const indicators = document.getElementById('carouselIndicators');
+			const container = document.querySelector('.carousel');
+			let isTransitioning = false;
+			let transitionTimeoutId = null;
+			let auto = null;
+				const realItems = items.slice();
+				const count = realItems.length;
+
+				// annotate real items
+				realItems.forEach((it,i)=>it.setAttribute('data-real-index', i));
+
+// Create full prefix and suffix copies for truly seamless looping
+			const beforeClones = realItems.map(it => { const c = it.cloneNode(true); c.classList.add('clone'); return c; });
+			const afterClones = realItems.map(it => { const c = it.cloneNode(true); c.classList.add('clone'); return c; });
+			// append suffix and prepend prefix (reverse to preserve order)
+			afterClones.forEach(c => track.appendChild(c));
+			beforeClones.reverse().forEach(c => track.insertBefore(c, track.firstChild));
+
+			// rebuild items array to include clones
+			const allItems = Array.from(track.children);
+
+			// start at the middle copy so both directions have room
+			let current = count; // index points to first real item in middle copy
+			let logicalIndex = 0; // 0..count-1 (logical position within real items)
+
+let gapPx = parseFloat(getComputedStyle(track).gap) || 14;
+        // recompute gapPx if CSS changes
+        function refreshGap(){ gapPx = parseFloat(getComputedStyle(track).gap) || 14; }
+
+        function setActiveClass(){
+          // clear
+          allItems.forEach(it=>it.classList.remove('is-active'));
+          // add to visible current item
+          const currentNode = allItems[current];
+          if(currentNode) currentNode.classList.add('is-active');
+          // canonical real index relative to middle copy
+          const realIndex = ((current - count) % count + count) % count;
+          const real = track.querySelector(`.carousel-item[data-real-index="${realIndex}"]:not(.clone)`);
+          if(real) real.classList.add('is-active');
+          // manage link focusability and ARIA: only active slide links are interactive
+          allItems.forEach(it=>{
+            const a = it.querySelector('a.carousel-link');
+            if(!a) return;
+            if(it.classList.contains('is-active')){
+              a.tabIndex = 0;
+              a.removeAttribute('aria-hidden');
+            } else {
+              a.tabIndex = -1;
+              a.setAttribute('aria-hidden','true');
+            }
+          });
+          // update indicators
+          if(indicators){
+            Array.from(indicators.children).forEach((btn,i)=>btn.setAttribute('aria-current', i===realIndex ? 'true' : 'false'));
+          }
+          // adjust arrows position
+          positionButtons();
+        }
+
+function getTranslateX(el){
+          const st = window.getComputedStyle(el).transform;
+          if(!st || st === 'none') return 0;
+          const m = st.match(/matrix\(([^)]+)\)/);
+          if(!m) return 0;
+          const vals = m[1].split(',');
+          return parseFloat(vals[4]);
+        }
+
+        function centerCurrent(animate = true){
+          refreshGap();
+          // position arrows instantly based on expected centered item (no chase while animating)
+          positionButtons(true);
+          const viewportRect = track.parentElement.getBoundingClientRect();
+          const viewportCenter = viewportRect.left + viewportRect.width / 2;
+          const itemRect = allItems[current].getBoundingClientRect();
+          const itemCenter = itemRect.left + itemRect.width / 2;
+          const delta = viewportCenter - itemCenter;
+          const currentTranslate = getTranslateX(track);
+          const newTranslate = currentTranslate + delta;
+          track.style.transition = animate ? 'transform 380ms cubic-bezier(.22,.9,.27,1)' : 'none';
+          track.style.transform = `translateX(${newTranslate}px)`;
+          // update indicators
+          if(indicators){
+            Array.from(indicators.children).forEach((btn,i)=>btn.setAttribute('aria-current', i===logicalIndex ? 'true' : 'false'));
+          }
+          setActiveClass();
+          // after animation completes, position buttons again (with subtle transition)
+          if(animate){
+            setTimeout(()=>{ positionButtons(false); }, 420);
+          } else {
+            positionButtons(false);
+          }
+        }
+
+        function positionButtons(instant = false){
+          if(!prevBtn || !nextBtn || !allItems[current]) return;
+          const vpRect = track.parentElement.getBoundingClientRect();
+          const vpWidth = vpRect.width;
+          // on narrow screens, keep arrows at edges
+          if(vpWidth <= 720){
+            prevBtn.style.transition = instant ? 'none' : '';
+            nextBtn.style.transition = instant ? 'none' : '';
+            prevBtn.style.left = '12px'; prevBtn.style.right = 'auto';
+            nextBtn.style.left = 'auto'; nextBtn.style.right = '12px';
+            return;
+          }
+          // compute item width (doesn't change) and derive positions relative to viewport center
+          const itemWidth = allItems[current].offsetWidth || allItems[current].getBoundingClientRect().width;
+          const gap = 12;
+          const arrowWidth = 40;
+          const leftPos = Math.max(12, Math.floor((vpWidth / 2) - (itemWidth / 2) - arrowWidth - gap));
+          const nextLeft = Math.min(vpWidth - (arrowWidth + 12), Math.ceil((vpWidth / 2) + (itemWidth / 2) + gap));
+          // set transitions
+          prevBtn.style.transition = instant ? 'none' : 'left 180ms ease';
+          nextBtn.style.transition = instant ? 'none' : 'left 180ms ease';
+          prevBtn.style.left = leftPos + 'px'; prevBtn.style.right = 'auto';
+          nextBtn.style.left = nextLeft + 'px'; nextBtn.style.right = 'auto';
+          // keep arrows visible above items
+          prevBtn.style.zIndex = 5; nextBtn.style.zIndex = 5;
+        }
+
+        function update(){
+          // animated centering
+          centerCurrent(true);
+          // prewarm two frames ahead/behind so content loads earlier
+          try{ prewarm(2); }catch(e){}
+          // fallback: make sure the transition lock is cleared even if transitionend doesn't fire
+          clearTimeout(transitionTimeoutId);
+          transitionTimeoutId = setTimeout(()=>{ isTransitioning = false; transitionTimeoutId = null; }, 520);
+        }
+
+        // prewarm: mark and trigger lightweight loads for nearby frames
+        function prewarm(distance = 2){
+          // clear previous warms
+          allItems.forEach(it=>it.classList.remove('is-warm'));
+          for(let d=1; d<=distance; d++){
+            const ahead = current + d;
+            const behind = current - d;
+            [ahead, behind].forEach(idx=>{
+              const it = allItems[idx];
+              if(!it) return;
+              it.classList.add('is-warm');
+              // prefetch the linked page (if any)
+              const aLink = it.querySelector('a.carousel-link');
+              if(aLink && aLink.href && !aLink.dataset.prefetched){
+                const pl = document.createElement('link');
+                pl.rel = 'prefetch';
+                pl.href = aLink.href;
+                document.head.appendChild(pl);
+                aLink.dataset.prefetched = '1';
+              }
+              // load img[data-src]
+              Array.from(it.querySelectorAll('img[data-src]')).forEach(img=>{ if(!img.src) img.src = img.getAttribute('data-src'); });
+              // load background thumb
+              const thumb = it.querySelector('.window-thumb[data-src]');
+              if(thumb && !thumb.style.backgroundImage){ thumb.style.backgroundImage = `url('${thumb.getAttribute('data-src')}')`; }
+            });
+          }
+        }
+
+				function jumpTo(index){
+					current = index;
+					update();
+				}
+
+				function moveNext(){
+				if(isTransitioning) return;
+				if(current >= allItems.length - 1) return;
+				isTransitioning = true;
+				current++;
+				logicalIndex = (logicalIndex + 1) % count;
+				update();
+			}
+
+			function movePrev(){
+				if(isTransitioning) return;
+				if(current <= 0) return;
+				isTransitioning = true;
+			current--;
+			logicalIndex = (logicalIndex - 1 + count) % count;
+			update();
+					for(let i=0;i<count;i++){
+						const b = document.createElement('button');
+						b.type='button';
+						b.setAttribute('aria-label', `Go to slide ${i+1}`);
+						b.addEventListener('click', ()=>{
+							if(isTransitioning) return;
+					isTransitioning = true;
+					logicalIndex = i;
+						current = i + count; // go to middle copy for stable visuals
+							update();
+						});
+						if(i===0) b.setAttribute('aria-current','true');
+						indicators.appendChild(b);
+					}
+				}
+
+				// handle transitionend to jump when landing on clones (snap without animation)
+				track.addEventListener('transitionend', (e)=>{
+					if(e.propertyName && e.propertyName !== 'transform' && e.propertyName !== 'all') return;
+					const node = allItems[current];
+					const viewportWidth = track.parentElement.getBoundingClientRect().width;
+          const itemWidth = allItems[current].getBoundingClientRect().width;
+          const stride = itemWidth + gapPx;
+          const centerOffset = (viewportWidth - itemWidth) / 2;
+					// if we landed inside the prefix copies, jump forward to the middle set
+					if(node.classList.contains('clone') && current < count){
+						current += count;
+						logicalIndex = ((current - count) % count + count) % count;
+						centerCurrent(false);
+						try{ prewarm(2); }catch(e){}
+						void track.offsetWidth;
+						requestAnimationFrame(()=>{ track.style.transition = '' });
+					}
+					// if we landed inside the suffix copies, jump back to the middle set
+					else if(node.classList.contains('clone') && current >= count * 2){
+						current -= count;
+						logicalIndex = ((current - count) % count + count) % count;
+						centerCurrent(false);
+						try{ prewarm(2); }catch(e){}
+						void track.offsetWidth;
+						requestAnimationFrame(()=>{ track.style.transition = '' });
+					}
+					// allow next transitions
+					isTransitioning = false;
+					// clear any fallback timeout
+					if(transitionTimeoutId){ clearTimeout(transitionTimeoutId); transitionTimeoutId = null; }
+        });
+
+// auto-rotate
+        auto = setInterval(moveNext,4500);
+        nextBtn && nextBtn.addEventListener('click', ()=>{ if(!isTransitioning) moveNext(); });
+        prevBtn && prevBtn.addEventListener('click', ()=>{ if(!isTransitioning) movePrev(); });
+				container && container.addEventListener('focusin', ()=>clearInterval(auto));
+				container && container.addEventListener('focusout', ()=>auto = setInterval(moveNext,4500));
+
+				// ensure container is focusable for keyboard
+			container && container.setAttribute('tabindex','0');
+				window.addEventListener('resize', ()=>{
+					// reposition without animation on resize
+					track.style.transition = 'none';
+					refreshGap();
+					centerCurrent(false);
+				});
+
+// initial position (snap into place after layout stabilizes)
+			(function initialPosition(){
+				// ensure layout/measurements are settled using two rAFs
+				track.style.transition = 'none';
+				requestAnimationFrame(()=>{
+					requestAnimationFrame(()=>{
+						centerCurrent(false);
+						// prewarm two ahead on init
+						try{ prewarm(2); }catch(e){}
+						// position arrows instantly
+						try{ positionButtons(true); }catch(e){}
+						// re-enable transitions after a tick
+						window.setTimeout(()=>{ track.style.transition = '' }, 40);
+					});
+				});
+			})();
+
+			// final safety: ensure perfect centering on load (some browsers/layouts need it)
+			window.addEventListener('load', ()=>{
+				try{ centerCurrent(false); positionButtons(true); prewarm(2); }catch(e){}
+			});
+			})();
+		</script>
+	</body>
+</html>
