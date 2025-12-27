@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact — Oscar Sobon</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand"><a href="index.html" style="text-decoration:none;color:inherit"><div class="logo">O</div></a>
+          <div>
+            <div style="font-weight:700">Oscar Sobon</div>
+            <div style="font-size:12px;color:var(--muted)">Computer Engineer</div>
+          </div>
+        </div>
+        <nav aria-label="Main navigation">
+          <a href="projects.html">Projects</a>
+          <a href="experience.html">Experience</a>
+          <a href="courses.html">Courses</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </header>
+
+      <main style="margin-top:36px">
+        <h1 class="page-title">Contact</h1>
+        <p class="lead-muted">I'm open to new opportunities and collaborations — shoot me an email or use the form below.</p>
+
+        <section style="margin-top:18px" class="card">
+          <form action="mailto:hello@example.com" method="post" enctype="text/plain">
+            <label style="display:block;margin-bottom:8px">Name
+              <input name="name" type="text" placeholder="Your name" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid var(--glass);background:transparent;color:inherit">
+            </label>
+            <label style="display:block;margin-bottom:8px">Message
+              <textarea name="message" rows="6" placeholder="Hi!" style="width:100%;padding:8px;margin-top:6px;border-radius:8px;border:1px solid var(--glass);background:transparent;color:inherit"></textarea>
+            </label>
+            <div style="margin-top:8px">
+              <button class="btn" type="submit">Send</button>
+              <a class="btn ghost" href="mailto:hello@example.com">Email me</a>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <footer>
+        © <span id="year"></span> Oscar Sobon — Built with care.
+      </footer>
+    </div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </body>
+</html>

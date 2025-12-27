@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About — Oscar Sobon</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand"><a href="index.html" style="text-decoration:none;color:inherit"><div class="logo">O</div></a>
+          <div>
+            <div style="font-weight:700">Oscar Sobon</div>
+            <div style="font-size:12px;color:var(--muted)">Computer Engineer</div>
+          </div>
+        </div>
+        <nav aria-label="Main navigation">
+          <a href="projects.html">Projects</a>
+          <a href="experience.html">Experience</a>
+          <a href="courses.html">Courses</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </header>
+
+      <main style="margin-top:36px">
+        <h1 class="page-title">About</h1>
+        <p class="lead-muted">I build production-ready web applications with an emphasis on performance, accessibility and clean code. I enjoy mentoring developers and contributing to open-source.</p>
+
+        <section style="margin-top:18px" class="card">
+          <h3 style="margin-top:0">Background</h3>
+          <p style="color:var(--muted);margin:6px 0 0">With a background in computer engineering, I design and ship web applications that scale. I care about developer experience, testing, and inclusive products.</p>
+        </section>
+      </main>
+
+      <footer>
+        © <span id="year"></span> Oscar Sobon — Built with care.
+      </footer>
+    </div>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </body>
+</html>
